@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/typedDispatch";
 import {
   fetchNews,
@@ -22,12 +22,10 @@ const HomePage = () => {
     loading,
     error,
   } = useAppSelector((state) => state.news.news);
-
   const {
     currentPage,
     itemsPerPage,
   } = useAppSelector((state) => state.news.pagination);
-
   const {
     selectedCategory,
     selectedSortBy,
@@ -35,6 +33,8 @@ const HomePage = () => {
     selectedAuthor,
   } = useAppSelector((state) => state.news.filterOptions);
 
+  const [isSideOpen, setIsSideOpen] = useState<boolean>(false)
+  const handleSidebarOpen = () => setIsSideOpen(!isSideOpen);
 
 
 
@@ -89,9 +89,6 @@ const HomePage = () => {
     sortNews();
   }, [selectedSortBy, selectedSortOrder]);
 
-
-  console.log(44, selectedCategory);
-
   const paginationdata = useMemo(() => {
     if (filteredData) {
       return filteredData?.slice(
@@ -109,8 +106,15 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
-      <div className="sidebar">
-        {loading ? <FilterSkelton /> : <SidebarFilter />}
+      <div className="sidebar-open">
+        <button className="sidebar-btn" onClick={handleSidebarOpen}>
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 50 50" className="icon">
+            <path d="M 5 8 A 2.0002 2.0002 0 1 0 5 12 L 45 12 A 2.0002 2.0002 0 1 0 45 8 L 5 8 z M 5 23 A 2.0002 2.0002 0 1 0 5 27 L 45 27 A 2.0002 2.0002 0 1 0 45 23 L 5 23 z M 5 38 A 2.0002 2.0002 0 1 0 5 42 L 45 42 A 2.0002 2.0002 0 1 0 45 38 L 5 38 z"></path>
+          </svg>
+          Filter</button>
+      </div>
+      <div className={`sidebar ${isSideOpen && "open"}`}>
+        {loading ? <FilterSkelton /> : <SidebarFilter handleSidebarOpen={handleSidebarOpen} />}
       </div>
       <div className="main-content">
         {loading ? <CardsSkelton /> :

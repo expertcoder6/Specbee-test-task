@@ -1,6 +1,5 @@
 import React from "react";
 import "./NewsCard.scss";
-
 import { BASEAPIURL } from "../../store/services";
 
 interface NewsCardProps {
@@ -13,7 +12,7 @@ interface NewsCardProps {
   author: string;
 }
 
-const newsCard: React.FC<NewsCardProps> = ({
+const NewsCard: React.FC<NewsCardProps> = ({
   title,
   image,
   date,
@@ -21,31 +20,34 @@ const newsCard: React.FC<NewsCardProps> = ({
   source,
   author,
 }) => {
-  return (
-    <div className="news-card">
-      <div className="news-head">
-        <div className="image-box">
+  const newsContent = `
+    <div class="news-card">
+      <div class="news-head">
+        <div class="image-box">
           <img
-            src={`${BASEAPIURL}${image}`}
-            alt={title}
-            className="news-image"
+            src="${BASEAPIURL}${image}"
+            alt="${title}"
+            class="news-image"
           />
         </div>
-        <div className="content-box">
-          <div className="news-header">
-            <p className="news-date">{date}</p>
-            <p className="news-source">{source}</p>
+        <div class="content-box">
+          <div class="news-header">
+            <span class="news-date">${date}</span>
+            <span class="news-source">${source}</span>
           </div>
-          <h2 className="news-title">{title}</h2>
+          <h2 class="news-title">${title}</h2>
         </div>
       </div>
-
-      <div className="news-content">
-        <p className="news-body">{body}</p>
-        <p className="news-author">{author}</p>
+      <div class="news-content">
+        <span class="news-body">${body}</span>
+        <span class="news-author">${author}</span>
       </div>
     </div>
+  `;
+
+  return (
+    <div dangerouslySetInnerHTML={{ __html: newsContent }} />
   );
 };
 
-export default newsCard;
+export default NewsCard;
