@@ -1,0 +1,48 @@
+.sidebar-filter {
+  .skeleton-h3 {
+    display: block;
+    width: 100px;
+    height: 20px;
+    background-color: #e7e7e7;
+    border-radius: 10px;
+    animation: pulse 1s infinite;
+  }
+
+  .filter-group {
+    .filter-item {
+      margin-bottom: 10px;
+
+      .skeleton-checkbox {
+        width: 20px;
+        height: 20px;
+        background-color: #f7f7f7;
+        border-radius: 50%;
+        animation: pulse 1s infinite;
+      }
+
+      .skeleton-label {
+        display: inline-block;
+        width: 100px;
+        height: 20px;
+        background-color: #f7f7f7;
+        border-radius: 10px;
+        animation: pulse 1s infinite;
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
