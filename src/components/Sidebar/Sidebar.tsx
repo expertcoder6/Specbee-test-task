@@ -5,7 +5,7 @@ import {
   setSelectedSortBy,
   setSelectedSortOrder,
 } from "../../store/NewsSlice/NewsSlice";
-import { Author, CatagoryData, SortBy } from "../../data/SideBarData";
+import { SortBy } from "../../data/SideBarData";
 import { useAppSelector, useAppDispatch } from "../../hooks/typedDispatch";
 
 const SidebarFilter = ({ handleSidebarOpen = () => { } }) => {
@@ -16,6 +16,11 @@ const SidebarFilter = ({ handleSidebarOpen = () => { } }) => {
     selectedSortBy,
     selectedSortOrder,
     selectedAuthor,
+  } = useAppSelector((state) => state.news.selectedFilterOptions);
+
+  const {
+    categoryOptions,
+    authorOptions,
   } = useAppSelector((state) => state.news.filterOptions);
 
   const handleNewsCategoryChange = (category: string) => {
@@ -63,28 +68,28 @@ const SidebarFilter = ({ handleSidebarOpen = () => { } }) => {
       </div>
       <h3>Category</h3>
       <div className="filter-group">
-        {CatagoryData.map((category) => (
-          <div className="filter-item" key={category.value}>
+        {categoryOptions.map((category,i) => (
+          <div className="filter-item" key={i}>
             <input
               type="checkbox"
-              checked={selectedCategory.includes(category?.value)}
-              onChange={() => handleNewsCategoryChange(category?.value)}
+              checked={selectedCategory.includes(category)}
+              onChange={() => handleNewsCategoryChange(category)}
             />
-            <span>{category?.lable}</span>
+            <span>{category}</span>
           </div>
         ))}
       </div>
 
       <h3>Author</h3>
       <div className="filter-group">
-        {Author?.map((author) => (
-          <div className="filter-item" key={author.value}>
+        {authorOptions?.map((author,i) => (
+          <div className="filter-item" key={i}>
             <input
               type="checkbox"
-              checked={selectedAuthor.includes(author?.value.toLowerCase())}
-              onChange={() => handleNewsAuthorChange(author?.value)}
+              checked={selectedAuthor.includes(author.toLowerCase())}
+              onChange={() => handleNewsAuthorChange(author.toLowerCase())}
             />
-            <span>{author?.lable}</span>
+            <span>{author}</span>
           </div>
         ))}
       </div>

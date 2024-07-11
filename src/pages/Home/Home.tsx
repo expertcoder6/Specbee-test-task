@@ -31,7 +31,7 @@ const HomePage = () => {
     selectedSortBy,
     selectedSortOrder,
     selectedAuthor,
-  } = useAppSelector((state) => state.news.filterOptions);
+  } = useAppSelector((state) => state.news.selectedFilterOptions);
 
   const [isSideOpen, setIsSideOpen] = useState<boolean>(false)
   const handleSidebarOpen = () => setIsSideOpen(!isSideOpen);
@@ -54,12 +54,12 @@ const HomePage = () => {
     let data = articles;
 
     if (selectedCategory?.length > 0) {
-      data = data.length > 0 ? data.filter((article) => selectedCategory.includes(article.source.toLowerCase())) : [];
+      data = data.length > 0 ? data.filter((article) => selectedCategory.includes(article.source?.toLowerCase())) : [];
     }
     if (selectedAuthor?.length > 0) {
-      data = data.filter((article) => selectedAuthor.includes(article.author.toLowerCase()));
+      data = data.filter((article) => selectedAuthor.includes(article.author?.toLowerCase())) ;
     }
-    dispatch(setFilteredData(data));
+    dispatch(setFilteredData(data || [] ));
   };
 
 

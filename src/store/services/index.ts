@@ -1,4 +1,4 @@
-export const BASEAPIURL: string = "https://dev-storm-rest-api.pantheonsite.io"
+export const BASEAPIURL: string = "https://dummy-rest-api.specbee.site"
 
 export const getFetchNews = async () => {
   try {

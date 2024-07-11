@@ -20,33 +20,32 @@ const NewsCard: React.FC<NewsCardProps> = ({
   source,
   author,
 }) => {
-  const newsContent = `
-    <div class="news-card">
-      <div class="news-head">
-        <div class="image-box">
-          <img
-            src="${BASEAPIURL}${image}"
-            alt="${title}"
-            class="news-image"
-          />
-        </div>
-        <div class="content-box">
-          <div class="news-header">
-            <span class="news-date">${date}</span>
-            <span class="news-source">${source}</span>
-          </div>
-          <h2 class="news-title">${title}</h2>
-        </div>
-      </div>
-      <div class="news-content">
-        <span class="news-body">${body}</span>
-        <span class="news-author">${author}</span>
-      </div>
-    </div>
-  `;
 
   return (
-    <div dangerouslySetInnerHTML={{ __html: newsContent }} />
+    <div className="news-card">
+    <div className="news-head">
+      <div className="image-box">
+        <img
+          src={BASEAPIURL+image}
+          alt=""
+          className="news-image"
+        />
+      </div>
+      <div className="content-box">
+        <div className="news-header">
+          <span className="news-date">{date}</span>
+          <span className="news-source">{source}</span>
+        </div>
+        <h2 className="news-title">{title}</h2>
+      </div>
+    </div>
+    <div className="news-content">
+      <span className="news-body">
+      <div dangerouslySetInnerHTML={{ __html: body }} />
+      </span>
+      <span className="news-author">{author}</span>
+    </div>
+  </div>
   );
 };
 

@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getFetchNews } from '../services';
-import { Article, NewsState } from '../NewsTypes/newsTypes';
+import { Article, FilterOptionsType, NewsState } from '../NewsTypes/newsTypes';
 import { RootState } from '../store';
+
+
 
 const initialState: NewsState = {
   news: {
@@ -15,6 +17,10 @@ const initialState: NewsState = {
     itemsPerPage: 5,
   },
   filterOptions: {
+    categoryOptions: [],
+    authorOptions: [],
+  },
+  selectedFilterOptions: {
     selectedCategory: [],
     selectedAuthor: [],
     selectedSortBy: 'date',
@@ -22,12 +28,28 @@ const initialState: NewsState = {
   }
 
 };
+const constructFilterOptions = (data: Article[]): FilterOptionsType => {
+  const categoryArr: string[] = [];
+  const authorArr: string[] = [];
 
-export const fetchNews = createAsyncThunk<Article[], void, { state: RootState }>(
+  data.forEach(item => {
+    if (item.source && !categoryArr.includes(item.source.toLowerCase())) {
+      categoryArr.push(item.source.toLowerCase());
+    }
+
+    if (item.author && !authorArr.includes(item.author.toLowerCase())) {
+      authorArr.push(item.author.toLowerCase());
+    }
+  });
+
+  return { categoryArr, authorArr, data };
+};
+
+export const fetchNews = createAsyncThunk<FilterOptionsType, void, { state: RootState }>(
   'news/fetchNews',
   async () => {
     const data = await getFetchNews();
-    return data as Article[];
+    return constructFilterOptions(data)
   }
 );
 
@@ -39,18 +61,18 @@ const newsSlice = createSlice({
       state.pagination.currentPage = action.payload;
     },
     setSelectedCategory(state, action) {
-      if (state.filterOptions.selectedCategory)
-        state.filterOptions.selectedCategory = [...action.payload];
+      if (state.selectedFilterOptions.selectedCategory)
+        state.selectedFilterOptions.selectedCategory = [...action.payload];
     },
     setSelectedAuthor(state, action) {
-      if (state.filterOptions.selectedAuthor)
-        state.filterOptions.selectedAuthor = [...action.payload];
+      if (state.selectedFilterOptions.selectedAuthor)
+        state.selectedFilterOptions.selectedAuthor = [...action.payload];
     },
     setSelectedSortBy(state, action) {
-      state.filterOptions.selectedSortBy = action.payload;
+      state.selectedFilterOptions.selectedSortBy = action.payload;
     },
     setSelectedSortOrder(state, action) {
-      state.filterOptions.selectedSortOrder = action.payload;
+      state.selectedFilterOptions.selectedSortOrder = action.payload;
     },
     setFilteredData(state, action) {
       state.news.filteredData = action.payload;
@@ -64,8 +86,10 @@ const newsSlice = createSlice({
       })
       .addCase(fetchNews.fulfilled, (state, action) => {
         state.news.loading = false;
-        state.news.articles = action.payload;
-        state.news.filteredData = action.payload
+        state.news.articles = action.payload.data;
+        state.news.filteredData = action.payload.data
+        state.filterOptions.authorOptions = action.payload.authorArr
+        state.filterOptions.categoryOptions = action.payload.categoryArr
       })
       .addCase(fetchNews.rejected, (state, action) => {
         state.news.loading = false;

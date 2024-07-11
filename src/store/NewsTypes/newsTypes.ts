@@ -9,6 +9,13 @@ export interface Article {
   author: string;
 }
 
+export interface FilterOptionsType {
+  categoryArr: string[];
+  authorArr: string[];
+  data: Article[];
+}
+
+
 export interface selectedFilterType {
   value: string,
   lable: string
@@ -25,7 +32,11 @@ export interface NewsState {
     currentPage: number;
     itemsPerPage: number;
   },
-  filterOptions: {
+  filterOptions:{
+    categoryOptions:string[] ,
+    authorOptions: string[],
+  },
+  selectedFilterOptions: {
     selectedCategory: string[];
     selectedAuthor: string[];
     selectedSortBy: string;
